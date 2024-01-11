@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+
+<body>
+<H1> Menu</H1>
+
+<p id="menu"> </p> 
+
+<script>
+
+xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+
+        myObj = JSON.parse(this.responseText);
+
+        var table = "<table border='1' id='menu-table' >"
+            for(x in myObj) {
+                table += "<tr> <td> " + myObj[x].Item + "</td> <td>" + myObj[x].Price + "</td> </tr>";
+            }
+            table += "</table>"
+            document.getElementById("menu").innerHTML = table;
+
+    }
+};
+
+xmlhttp.open("GET", "http://localhost/select", true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.send();
+
+
+
+</script>
+
+</body>
+
+</html>

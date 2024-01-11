@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>
+ENTER NUMBERS
+</title>
+</head>
+
+<body><H1>WELCOME.<br>Want to call off some lessons?</H1></body>
+
+
+<form action="/addNumber" method="post">
+
+  <label for="num">Enter patron number EXACTLY in E.164 format, eg '13061234567'</label>
+  <br>
+  <br>
+  <input type="text" name="num" value="">
+  
+  <br>
+  
+  <input type="submit" value="Add Number">
+  <br>
+  <br>
+</form>
+  <br>
+  <br>  
+  <br>
+  Make sure only the numbers you want are in this list
+  <p id="menu"> </p>
+  <br> 
+  <br>
+  <br>
+<head>
+<script>
+
+
+xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+
+        myObj = JSON.parse(this.responseText);
+
+        var table = "<table border='1' id='menu-table'>";
+			table += "<tr> <td> " + 'Numbers:';
+            for(x in myObj) {
+                table += "<tr> <td> " + myObj[x].nums;
+            }
+            table += "</table>"
+            document.getElementById("menu").innerHTML = table;
+
+		var table = "";
+			table += "<br>" + 'Numbers:';
+            for(x in myObj) {
+                table += "<br>" + myObj[x].nums;
+            }
+            table += "</table>"
+            document.getElementById("menu").innerHTML = table;
+
+        
+            onRowClick("menu-table", function (row){
+            var value = row.getElementsByTagName("td")[0].innerHTML;
+            document.getElementById('selected').innerHTML = value;
+            });
+			
+		
+
+    }
+};
+
+xmlhttp.open("GET", "http://172.16.1.64/viewNumbers", true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.send();
+
+
+
+</script>
+</head>
+<a href="clearNumbers">REMOVE ALL NUMBERS FROM LIST</a></p><br><br>
+
+<label>When all the numbers show in the list, select one of the options for what caused the cancelation:</label>
+<br>Will redirct back to home page
+<br><br>
+
+<a href="makeCallCold">Click Here for Air Temp Message </a></p>
+<a href="makeCallThunder">Click Here for Storm Message (NOT WORKING)</a></p>
+<a href="makeCallBroke">Click Here for Pool Malfunction Message (NOT WORKING)</a></p>
+<br>
+
+</html>

@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+ node1: 
+  build: ./s2
+  depends_on:
+   - postgres1
+  container_name: s2
+  ports:
+   - "80:8080"
+  volumes:
+   - D:/CMPT_353/Project2/s2:/usr/src/app
+  
+
+ postgres1:
+  image: postgres:13.1
+  container_name: db2
+  ports:
+   - "5432:5432"
+  environment:
+   POSTGRES_USER: postgres
+   POSTGRES_PASSWORD: admin
+   DATABASE_URL: localhost
+  volumes:
+    - "./postgres/postgres.conf:/usr/local/etc/postgres/postgres.conf"
+    - "./postgres/data:/var/lib/postgresql/data:delegated"
+  command: "postgres -c config_file=/usr/local/etc/postgres/postgres.conf"

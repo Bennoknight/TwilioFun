@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+
+    <title> Forms </title>
+
+</head>
+
+
+<body>
+<a href="createMenus">Create Menu and Orders</a></p>
+
+<H1>Menu</H1>
+<p id="menu"> </p>
+<br>
+<H1>Orders</H1>
+<p id="orders"> </p>
+
+<br>
+<br>
+
+<form action="/orderReady" method="post">
+
+  <label for="name">Enter name of customer whose order is ready:</label>
+  <br>
+  <br>
+  <input type="text" name="name" value="">
+  
+  <br>
+  
+  <input type="submit" value="Submit">
+  <br>
+  <br>
+</form>
+
+
+
+<form action="/orderDone" method="post">
+
+  <label for="done">Enter name of customer whose order needs deletion:</label>
+  <br>
+  <br>
+  <input type="text" name="done" value="">
+  
+  <br>
+  
+  <input type="submit" value="Submit">
+  <br>
+  <br>
+</form>
+
+
+  <br>
+  <H1>Add Item to Menu</H1>
+  <br>
+<form action="/addItem" method="post">
+
+  <label for="item">Enter New Item Name:</label>
+  <br>
+  <input type="text" name="item" value="">
+  <br>
+  <br>
+  <label for="price">Enter Price:</label>
+  <br>
+  <input type="text" name="price" value="">
+  
+  <br>
+  
+  <input type="submit" value="Submit">
+  <br>
+  <br>
+</form>
+
+
+<br>
+<br>
+<H1>Delete Item from Menu</H1>
+<br>
+<form action="/deleteItem" method="post">
+
+  <label for="item">Enter Item Name:</label>
+  <br>
+  <input type="text" name="item" value="">
+  <br>
+  <br> 
+  <input type="submit" value="Submit">
+  <br>
+  <br>
+</form>
+
+<script>
+
+xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+
+        myObj = JSON.parse(this.responseText);
+
+        var table = "<table border='1' id='menu-table' >";
+			table += "<tr> <td> " + 'Item' + "</td> <td>" + 'Price' + "</td> </tr>";
+            for(x in myObj) {
+                table += "<tr> <td> " + myObj[x].item + "</td> <td>" + myObj[x].price + "</td> </tr>";
+            }
+            table += "</table>"
+            document.getElementById("menu").innerHTML = table;
+        
+            onRowClick("menu-table", function (row){
+            var value = row.getElementsByTagName("td")[0].innerHTML;
+            document.getElementById('selected').innerHTML = value;
+            });
+
+    }
+};
+
+xmlhttp.open("GET", "http://localhost/viewMenu", true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.send();
+
+
+
+</script>
+<script>
+
+xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+
+        myObj = JSON.parse(this.responseText);
+
+        var table = "<table border='1' id='menu-table' >";
+			table += "<tr> <td> " + 'Item' + "</td> <td>" + 'Customer' + "</td> <td>" + 'Ready?' + "</td> <td>" + 'Time Ordered' + "</td> </tr>";
+            for(x in myObj) {
+                table += "<tr> <td> " + myObj[x].item + "</td> <td>" + myObj[x].customer + "</td> <td>" + myObj[x].ready + "</td> <td>" + myObj[x].time + "</td> </tr>";
+            }
+            table += "</table>"
+            document.getElementById("orders").innerHTML = table;
+        
+            onRowClick("menu-table", function (row){
+            var value = row.getElementsByTagName("td")[0].innerHTML;
+            document.getElementById('selected').innerHTML = value;
+            });
+
+    }
+};
+
+xmlhttp.open("GET", "http://localhost/viewOrders", true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.send();
+
+
+
+</script>
+
+</body>

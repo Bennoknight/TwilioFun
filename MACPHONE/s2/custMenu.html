@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+
+    <title> Forms </title>
+
+</head>
+
+
+<body>
+
+<H1>Menu</H1>
+<p id="menu"> </p>
+<br>
+<H1>Orders</H1>
+<p id="orders"> </p>
+
+<br>
+<br>
+
+<H1>Place Order</H1>
+<form action="/placeOrder" method="post">
+
+  <label for="name">Enter Name:</label>
+  <br>
+  <br>
+  <input type="text" name="name" value="">
+  <br>
+  <br>
+  <label for="order">Enter Order:</label>
+  <br>
+  <br>
+  <textarea name="order" rows="10" cols="30"></textarea>
+  
+  <br>
+  
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+
+xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+
+        myObj = JSON.parse(this.responseText);
+
+        var table = "<table border='1' id='menu-table' >";
+			table += "<tr> <td> " + 'Item' + "</td> <td>" + 'Price' + "</td> </tr>";
+            for(x in myObj) {
+                table += "<tr> <td> " + myObj[x].item + "</td> <td>" + myObj[x].price + "</td> </tr>";
+            }
+            table += "</table>"
+            document.getElementById("menu").innerHTML = table;
+        
+            onRowClick("menu-table", function (row){
+            var value = row.getElementsByTagName("td")[0].innerHTML;
+            document.getElementById('selected').innerHTML = value;
+            });
+
+    }
+};
+
+xmlhttp.open("GET", "http://localhost/viewMenu", true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.send();
+
+
+
+</script>
+<script>
+
+xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if(this.readyState == 4 && this.status == 200) {
+
+        myObj = JSON.parse(this.responseText);
+
+        var table = "<table border='1' id='menu-table' >";
+			table += "<tr> <td> " + 'Item' + "</td> <td>" + 'Customer' + "</td> <td>" + 'Ready?' + "</td> <td>" + 'Time Ordered' + "</td> </tr>";
+            for(x in myObj) {
+                table += "<tr> <td> " + myObj[x].item + "</td> <td>" + myObj[x].customer + "</td> <td>" + myObj[x].ready + "</td> <td>" + myObj[x].time + "</td> </tr>";
+            }
+            table += "</table>"
+            document.getElementById("orders").innerHTML = table;
+        
+            onRowClick("menu-table", function (row){
+            var value = row.getElementsByTagName("td")[0].innerHTML;
+            document.getElementById('selected').innerHTML = value;
+            });
+
+    }
+};
+
+xmlhttp.open("GET", "http://localhost/viewOrders", true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.send();
+
+
+
+</script>
+
+</body>
